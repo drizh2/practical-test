@@ -1,0 +1,35 @@
+version: '3.1'
+services:
+  postgesql:
+    image: "postgres:latest"
+    container_name: spring.postgres
+    restart: unless-stopped
+    environment:
+      - POSTGRES_DB=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=Impala67
+    ports:
+      - 5432:5432
+    networks:
+      - postgres
+    volumes:
+      - 'spring_postgres:/var/lib/postgresql/data/'
+  pgadmin:
+    container_name: spring.pgadmin
+    image: dpage/pgadmin4:latest
+    environment:
+      PGADMIN_DEFAULT_EMAIL: drizh2@fake.com
+      PGADMIN_DEFAULT_PASSWORD: admin
+    volumes:
+      - spring_pgadmin:/var/lib/pgadmin
+    ports:
+      - 5050:80
+    networks:
+      - postgres
+    restart: unless-stopped
+volumes:
+  spring_postgres:
+  spring_pgadmin:
+networks:
+  postgres:
+    driver: bridge
